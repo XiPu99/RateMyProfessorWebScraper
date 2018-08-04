@@ -2,13 +2,7 @@ import requests, sys, webbrowser
 
 # check if user has entered a valid ID number
 def checkIfValid(id, allIDs):
-    if len(id) == 0:
-        return False
-    try:
-        index = allIDs.index(int(id))
-        return True
-    except ValueError:
-        return False
+    return len(id) != 0 and int(id) in allIDs
 
 # check if users have entered more than one command line arguments
 if len(sys.argv) > 1:
