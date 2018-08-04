@@ -1,4 +1,4 @@
-import requests, sys
+import requests, sys, webbrowser
 
 # check if users have entered more than one command line arguments
 if len(sys.argv) > 1:
@@ -23,28 +23,8 @@ if len(sys.argv) > 1:
     # exactly one result is found
     elif numFound == 1:
         id = responseObj['docs'][0]['pk_id']
-        pageNum = 1
-
-        url = 'http://www.ratemyprofessors.com/paginate/professors/ratings?tid={0}&page={1}&max=20&cache=false'.format(id, pageNum)
-        r = requests.get(url)
-        r.raise_for_status()
-        data = r.json()
-        ratings = data['ratings']
-
-        # keep printing all comments until there is no more comment
-        while data['remaining'] >= 0 and len(ratings)>0:
-            for rating in ratings:
-                print(rating['rComments'])
-                print()
-
-            # update page number which is part of url below
-            pageNum += 1
-            # form the url by using page number and teacher's id
-            url = 'http://www.ratemyprofessors.com/paginate/professors/ratings?tid={0}&page={1}&max=20&cache=false'.format(id, pageNum)
-            r = requests.get(url)
-            r.raise_for_status()
-            data = r.json()
-            ratings = data['ratings']
+        url = 'http://www.ratemyprofessors.com/ShowRatings.jsp?tid={0}&showMyProfs=true'.format(id)
+        webbrowser.open(url)
 
     # more than one result are found
     else:
