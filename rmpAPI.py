@@ -18,7 +18,7 @@ if len(sys.argv) > 1:
     numFound = responseObj['numFound']
 
     if numFound == 0:
-        print('No results found.')
+        print('No results found. ')
 
     # exactly one result is found
     elif numFound == 1:

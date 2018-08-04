@@ -1,5 +1,15 @@
 import requests, sys, webbrowser
 
+# check if user has entered a valid ID number
+def checkIfValid(id, allIDs):
+    if len(id) == 0:
+        return False
+    try:
+        index = allIDs.index(int(id))
+        return True
+    except ValueError:
+        return False
+
 # check if users have entered more than one command line arguments
 if len(sys.argv) > 1:
     name = ' '.join(sys.argv[1:])
@@ -30,10 +40,23 @@ if len(sys.argv) > 1:
     else:
         print(str(numFound) + ' results found:')
         results = responseObj['docs']
+        ids = []
 
         # print all search results
         for prof in results:
-            print(prof['teacherfirstname_t'] + ' ' + prof['teacherlastname_t'])
+            print(prof['teacherfirstname_t'] + ' ' + prof['teacherlastname_t'] + ' ID: ' + str(prof['pk_id']))
+            ids.append(prof['pk_id'])
+
+        targetID = input('Which professor are you looking for? Enter the ID: ')
+        while targetID!='q':
+            if checkIfValid(targetID, ids):
+                url = 'http://www.ratemyprofessors.com/ShowRatings.jsp?tid={0}&showMyProfs=true'.format(targetID)
+                webbrowser.open(url)
+                break
+            else:
+                print('Invalid ID number. Enter \'q\' to quit the program or one of the following ID numbers: ')
+                print(ids)
+                targetID = input('Enter your command or ID now: ')
 
 # no command line argument is entered
 else:
